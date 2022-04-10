@@ -16,6 +16,19 @@ router.get('/all', function(req, res){
     });
 });
 
+router.get('/all/:isRead', function(req, res){
+    book.filter(req.params.isRead, function(err, books){
+        if(err) {
+            res.status(404);
+            res.json({
+                error: "Books not found"
+            });
+        } else {
+            res.json(books);
+        }
+    });
+});
+
 router.get('/:id', function(req, res){ 
     book.get(req.params.id, function(err, book){
         if(err) {

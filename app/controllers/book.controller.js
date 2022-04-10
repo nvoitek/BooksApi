@@ -10,6 +10,18 @@ function bookList(cb) {
     });
 }
 
+function bookFilter(isRead, cb) {
+    console.log(isRead);
+    Book.find({isRead: isRead}).lean().exec(function(err, books) {
+        console.log(err);
+        if (err) {
+            cb(err);
+        } else {
+            cb(null, books);
+        }
+    });
+}
+
 function bookGet(id, cb) {
     Book.findById(id).exec(function(err, book) {
         if (err) {
@@ -35,8 +47,8 @@ function bookAdd(data, cb) {
 }
 
 function bookUpdate(id, data, cb) {
+    data.updated_at = Date.now();
     Book.updateOne({_id: id}, data, function(err, book) {
- 
         if(err) {
             cb(err);
         } else {
@@ -58,6 +70,7 @@ function bookDelete(id, cb) {
 
 module.exports = {
     list: bookList,
+    filter: bookFilter,
     get: bookGet,
     add: bookAdd,
     update: bookUpdate,
